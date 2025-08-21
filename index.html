@@ -1063,7 +1063,16 @@ background: rgba(26, 26, 46, 0.95);  /* يتناسب مع الخلفية الج�
     cursor: not-allowed;
     pointer-events: none;
 }
-        
+  
+
+.profile-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+
     </style>
 </head>
 <body>
@@ -1112,8 +1121,10 @@ background: rgba(26, 26, 46, 0.95);  /* يتناسب مع الخلفية الج�
         <h2 class="section-title">نبذة عني</h2>
         <div class="about-content">
             <div class="profile-card">
-                <div class="profile-img">KS</div>
-                <h3>كميل سلمان بن أحمد</h3>
+                <div class="profile-img">
+                    <img src="media/profile.jpg" alt="كميل سلمان">
+                </div>
+                                <h3>كميل سلمان بن أحمد</h3>
                 <p>الأحساء، المملكة العربية السعودية</p>
                 <p>📧 Komaislaman@gmail.com</p>
                 <p>📱 0552258381</p>
