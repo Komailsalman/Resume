@@ -1142,6 +1142,45 @@ background: rgba(26, 26, 46, 0.95);  /* يتناسب مع الخلفية الج�
     }
 }
 
+
+/* Language Switcher */
+.lang-switcher {
+    position: absolute;
+    left: 50px;
+}
+
+.lang-btn {
+    background: rgba(108, 99, 255, 0.2);
+    border: 1px solid rgba(108, 99, 255, 0.4);
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.lang-btn:hover {
+    background: var(--gradient);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+    .lang-switcher {
+        position: static;
+        margin-left: auto;
+        margin-right: 15px;
+    }
+    
+    .lang-btn {
+        padding: 6px 15px;
+        font-size: 12px;
+    }
+}
+
+
         
     </style>
 </head>
@@ -1157,6 +1196,13 @@ background: rgba(26, 26, 46, 0.95);  /* يتناسب مع الخلفية الج�
     <nav id="navbar">
         <div class="nav-container">
             <a href="#home" class="nav-logo">كميل سلمان</a>
+
+            <!-- Language Switcher -->
+<div class="lang-switcher">
+    <button class="lang-btn" onclick="toggleLanguage()">
+        <span class="lang-text">EN</span>
+    </button>
+</div>
             <div class="hamburger" onclick="toggleMenu()">
                 <span></span>
                 <span></span>
@@ -1810,7 +1856,371 @@ document.querySelectorAll('.modal-content').forEach(content => {
     }
 });
 
+// Language System
+const translations = {
+    ar: {
+        // Navigation
+        home: "الرئيسية",
+        about: "نبذة عني",
+        skills: "المهارات",
+        portfolio: "الأعمال",
+        experience: "الخبرات",
+        contact: "تواصل",
+        
+        // Hero Section
+        heroTitle: "كميل سلمان",
+        heroSubtitle: "محلل بيانات | مصمم جرافيك | مطور | خبير ذكاء اصطناعي",
+        viewWork: "شاهد أعمالي",
+        contactMe: "تواصل معي",
+        
+        // About Section
+        aboutTitle: "نبذة عني",
+        profileName: "كميل سلمان بن أحمد",
+        location: "الأحساء، المملكة العربية السعودية",
+        aboutRole: "مختص نظم معلومات إدارية",
+        aboutText1:"حاصل على شهادة البكالوريوس في نظم المعلومات الإدارية (MIS)، مجال يجمع بين الأعمال والتكنولوجيا لتحسين الأداء التنظيمي من خلال استخدام أنظمة المعلومات"        ,
+        aboutText2: "لدي اهتمام قوي ومشاركة فعالة في المشاريع المتعلقة بالبرمجة، تحليل البيانات، إدارة البيانات، تصميم المواقع، التصميم الجرافيكي، والذكاء الاصطناعي.",
+        aboutText3: "خبير في استخدام Power BI لتحليل بيانات المشاريع، تتبع مؤشرات الأداء، ودعم اتخاذ القرار في الهندسة والبناء.",
+        
+        // Skills
+        skillsTitle: "المهارات التقنية",
+        skill1: "تحليل البيانات",
+        skill2: "هندسة الذكاء الاصطناعي",
+        skill3: "تطوير الويب والتطبيقات",
+        skill4: "التصميم الجرافيكي",
+        
+        // Portfolio
+        portfolioTitle: "نماذج من أعمالي",
+        
+        // Experience
+        experienceTitle: "الخبرات المهنية",
+        
+        // Contact
+        contactTitle: "تواصل معي",
+        contactInfo: "معلومات التواصل",
+        email: "البريد الإلكتروني",
+        phone: "الهاتف",
+        locationLabel: "الموقع",
+        
+        // Footer
+        rights: "جميع الحقوق محفوظة"
+    },
+    en: {
+        // Navigation
+        home: "Home",
+        about: "About",
+        skills: "Skills",
+        portfolio: "Portfolio",
+        experience: "Experience",
+        contact: "Contact",
+        
+        // Hero Section
+        heroTitle: "Komail Salman",
+        heroSubtitle: "Data Analyst | Graphic Designer | Developer | AI Expert",
+        viewWork: "View My Work",
+        contactMe: "Contact Me",
+        
+        // About Section
+        aboutTitle: "About Me",
+        profileName: "Komail Salman BinAhmed",
+        location: "Al-Ahsa, Saudi Arabia",
+        aboutRole: "Management Information Systems Specialist",
+        aboutText1: "Holder of Bachelor degree in Management Information Systems (MIS), a field that combines business and technology to improve organizational performance through the use of information systems.",
+        aboutText2: "I have strong interest and active involvement in projects related to programming, data analysis, data management, web design, graphic design, and artificial intelligence.",
+        aboutText3: "Expert in using Power BI to analyze project data, track performance indicators, and support decision-making in engineering and construction.",
+        
+        // Skills
+        skillsTitle: "Technical Skills",
+        skill1: "Data Analysis",
+        skill2: "AI Engineering",
+        skill3: "Web & App Development",
+        skill4: "Graphic Design",
+        
+        // Portfolio
+        portfolioTitle: "Portfolio",
+        
+        // Experience
+        experienceTitle: "Professional Experience",
+        
+        // Contact
+        contactTitle: "Contact Me",
+        contactInfo: "Contact Information",
+        email: "Email",
+        phone: "Phone",
+        locationLabel: "Location",
+        
+        // Footer
+        rights: "All Rights Reserved"
+    }
+};
 
+// Initialize language
+let currentLang = localStorage.getItem('language') || 'ar';
+
+// Apply language on load
+document.addEventListener('DOMContentLoaded', function() {
+    applyLanguage(currentLang);
+});
+
+// Toggle language function
+function toggleLanguage() {
+    currentLang = currentLang === 'ar' ? 'en' : 'ar';
+    localStorage.setItem('language', currentLang);
+    applyLanguage(currentLang);
+}
+
+// Apply language function
+function applyLanguage(lang) {
+    const t = translations[lang];
+    const langBtn = document.querySelector('.lang-text');
+    
+    // Update button text
+    langBtn.textContent = lang === 'ar' ? 'EN' : 'عربي';
+    
+    // Update HTML attributes
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    
+    // Update navigation
+    document.querySelectorAll('nav a span').forEach((el, i) => {
+        const keys = ['home', 'about', 'skills', 'portfolio', 'experience', 'contact'];
+        if (t[keys[i]]) el.textContent = t[keys[i]];
+    });
+    
+    // Update hero section
+    const heroTitle = document.querySelector('.hero-title');
+    const subtitle = document.querySelector('.subtitle');
+    const btns = document.querySelectorAll('.cta-buttons .btn');
+    
+    if (heroTitle) heroTitle.textContent = t.heroTitle;
+    if (subtitle) subtitle.textContent = t.heroSubtitle;
+    if (btns[0]) btns[0].textContent = t.viewWork;
+    if (btns[1]) btns[1].textContent = t.contactMe;
+    
+    // Update section titles
+    const sectionTitles = document.querySelectorAll('.section-title');
+    const titleKeys = ['aboutTitle', 'skillsTitle', 'portfolioTitle', 'experienceTitle', 'contactTitle'];
+    sectionTitles.forEach((el, i) => {
+        if (t[titleKeys[i]]) el.textContent = t[titleKeys[i]];
+    });
+    
+    // Update about section
+    const aboutRole = document.querySelector('.about-text h3');
+    const aboutParas = document.querySelectorAll('.about-text p');
+    if (aboutRole) aboutRole.textContent = t.aboutRole;
+    if (aboutParas[0]) aboutParas[0].textContent = t.aboutText1;
+    if (aboutParas[1]) aboutParas[1].textContent = t.aboutText2;
+    if (aboutParas[2]) aboutParas[2].textContent = t.aboutText3;
+    
+    // Update profile card
+    const profileName = document.querySelector('.profile-card h3');
+    if (profileName) profileName.textContent = t.profileName;
+    
+    // Update skills
+    const skillNames = document.querySelectorAll('.skill-name');
+    const skillKeys = ['skill1', 'skill2', 'skill3', 'skill4'];
+    skillNames.forEach((el, i) => {
+        if (t[skillKeys[i]]) el.textContent = t[skillKeys[i]];
+    });
+    
+    // Update footer
+    const footer = document.querySelector('footer p');
+    if (footer) {
+        footer.innerHTML = lang === 'ar' 
+            ? `&copy; 2025 كميل سلمان - ${t.rights}`
+            : `&copy; 2025 Komail Salman - ${t.rights}`;
+    }
+    
+    // Update text alignment for LTR/RTL
+    if (lang === 'en') {
+        document.querySelectorAll('.about-text, .about-text p, .about-text h3').forEach(el => {
+            el.style.textAlign = 'left';
+        });
+    } else {
+        document.querySelectorAll('.about-text, .about-text p, .about-text h3').forEach(el => {
+            el.style.textAlign = 'right';
+        });
+    }
+
+    // أضف هذا في دالة applyLanguage بعد الكود الموجود:
+
+// ترجمة الموقع في profile card
+const locationP = document.querySelectorAll('.profile-card p')[0];
+if (locationP && lang === 'en') {
+    locationP.textContent = "Al-Ahsa, Saudi Arabia";
+}
+
+// ترجمة بطاقات Portfolio بالكامل
+const portfolioTitles = document.querySelectorAll('.portfolio-title');
+const portfolioDescs = document.querySelectorAll('.portfolio-desc');
+
+portfolioTitles.forEach((title, index) => {
+    if (portfolioData[lang][index]) {
+        title.textContent = portfolioData[lang][index].title;
+    }
+});
+
+portfolioDescs.forEach((desc, index) => {
+    if (portfolioData[lang][index]) {
+        desc.textContent = portfolioData[lang][index].desc;
+    }
+});
+
+// ترجمة الخبرات المهنية
+const experienceData = {
+    ar: [
+        {
+            date: "2021 - الحالي",
+            title: "محلل بيانات",
+            desc: "إجراء تحليل البيانات لاستخراج الرؤى، بناء لوحات تحكم تفاعلية، ودعم اتخاذ القرارات التجارية. تطوير لوحات Power BI ديناميكية لمقاييس الأداء ومؤشرات KPI للمشاريع."
+        },
+        {
+            date: "2018 - 2021",
+            title: "دعم فني",
+            desc: "تقديم الدعم للمستخدمين النهائيين بما في ذلك البرامج والمشكلات التقنية المتعلقة بمنصات الويب."
+        },
+        {
+            date: "2018 - 2021",
+            title: "مصمم موشن جرافيك",
+            desc: "إنشاء محتوى متحرك جذاب للمنصات الرقمية، بما في ذلك مقاطع الفيديو الترويجية والرسوم المتحركة التوضيحية ومرئيات وسائل التواصل الاجتماعي."
+        }
+    ],
+    en: [
+        {
+            date: "2021 - Present",
+            title: "Data Analyst",
+            desc: "Conducting data analysis to extract insights, building interactive dashboards, and supporting business decision-making. Developing dynamic Power BI dashboards for performance metrics and project KPIs."
+        },
+        {
+            date: "2018 - 2021",
+            title: "Technical Support",
+            desc: "Providing end-user support including software and technical issues related to web platforms."
+        },
+        {
+            date: "2018 - 2021",
+            title: "Motion Graphic Designer",
+            desc: "Creating engaging animated content for digital platforms, including promotional videos, explainer animations, and social media visuals."
+        }
+    ]
+};
+
+// تطبيق ترجمة الخبرات
+const timelineDates = document.querySelectorAll('.timeline-date');
+const timelineTitles = document.querySelectorAll('.timeline-title');
+const timelineDescs = document.querySelectorAll('.timeline-content p');
+
+timelineDates.forEach((date, index) => {
+    if (experienceData[lang][index]) {
+        date.textContent = experienceData[lang][index].date;
+    }
+});
+
+timelineTitles.forEach((title, index) => {
+    if (experienceData[lang][index]) {
+        title.textContent = experienceData[lang][index].title;
+    }
+});
+
+timelineDescs.forEach((desc, index) => {
+    if (experienceData[lang][index]) {
+        desc.textContent = experienceData[lang][index].desc;
+    }
+});
+
+// ترجمة معلومات التواصل
+const contactInfoTitle = document.querySelector('.contact-info h3');
+const emailLabel = document.querySelector('.contact-item strong');
+const phoneLabel = document.querySelectorAll('.contact-item strong')[1];
+const locationLabel = document.querySelectorAll('.contact-item strong')[2];
+
+if (lang === 'en') {
+    if (contactInfoTitle) contactInfoTitle.textContent = "Contact Information";
+    if (emailLabel) emailLabel.textContent = "Email";
+    if (phoneLabel) phoneLabel.textContent = "Phone";
+    if (locationLabel) locationLabel.textContent = "Location";
+    
+    // ترجمة المدينة
+    const locationText = document.querySelectorAll('.contact-item div')[2];
+    if (locationText) {
+        locationText.innerHTML = '<strong>Location</strong><br>Al-Ahsa, Saudi Arabia';
+    }
+}
+
+
+}
+
+
+// Portfolio translations
+const portfolioData = {
+    ar: [
+        {
+            title: "لوحة تحكم تحليلية متقدمة",
+            desc: "لوحة تحكم تفاعلية باستخدام Power BI لتتبع مؤشرات الأداء الرئيسية وتحليل البيانات في الوقت الفعلي"
+        },
+        {
+            title: "فيديو موشن جرافيك احترافي",
+            desc: "إنتاج فيديوهات موشن جرافيك إبداعية للحملات التسويقية ووسائل التواصل الاجتماعي"
+        },
+        {
+            title: "نظام ذكاء اصطناعي متطور",
+            desc: "تطوير نظام ذكي باستخدام تقنيات الذكاء الاصطناعي وهندسة البرومبت للحصول على نتائج مثالية"
+        },
+        {
+            title: "موقع ويب تفاعلي",
+            desc: "تطوير موقع ويب حديث وتفاعلي باستخدام أحدث التقنيات مع واجهة مستخدم جذابة"
+        },
+        {
+            title: "تصاميم جرافيك إبداعية",
+            desc: "تصاميم جرافيك احترافية للعلامات التجارية والهوية البصرية"
+        },
+        {
+            title: "حلول تقنية مبتكرة",
+            desc: "تطوير حلول برمجية مخصصة لتحسين العمليات وزيادة الكفاءة"
+        }
+    ],
+    en: [
+        {
+            title: "Advanced Analytics Dashboard",
+            desc: "Interactive dashboard using Power BI to track KPIs and analyze data in real-time"
+        },
+        {
+            title: "Professional Motion Graphics",
+            desc: "Creating creative motion graphics videos for marketing campaigns and social media"
+        },
+        {
+            title: "Advanced AI System",
+            desc: "Developing intelligent systems using AI technologies and prompt engineering"
+        },
+        {
+            title: "Interactive Website",
+            desc: "Developing modern interactive websites using latest technologies with attractive UI"
+        },
+        {
+            title: "Creative Graphic Designs",
+            desc: "Professional graphic designs for brands and visual identity"
+        },
+        {
+            title: "Innovative Tech Solutions",
+            desc: "Developing custom software solutions to improve processes and increase efficiency"
+        }
+    ]
+};
+
+// Update portfolio items
+const portfolioTitles = document.querySelectorAll('.portfolio-title');
+const portfolioDescs = document.querySelectorAll('.portfolio-desc');
+
+portfolioTitles.forEach((title, index) => {
+    if (portfolioData[lang][index]) {
+        title.textContent = portfolioData[lang][index].title;
+    }
+});
+
+portfolioDescs.forEach((desc, index) => {
+    if (portfolioData[lang][index]) {
+        desc.textContent = portfolioData[lang][index].desc;
+    }
+});
 
     </script>
 </body>
